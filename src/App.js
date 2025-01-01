@@ -16,10 +16,13 @@ function App() {
 
   const handleMount = async () => {
     try {
+      console.log('handlingMount')
       const { data } = await axios.get("dj-rest-auth/user/");
       setCurrentUser(data);
+      console.log('error no happen')
     } catch (err) {
       console.log(err);
+      console.log('error happen')
     }
   };
 
