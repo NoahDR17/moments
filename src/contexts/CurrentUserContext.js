@@ -15,8 +15,9 @@ export const CurrentUserProvider = ({ children }) => {
 
   const handleMount = async () => {
     try {
-      const { data } = await axiosRes.get("dj-rest-auth/user/");
+      const { data } = await axiosReq.get("dj-rest-auth/user/");
       setCurrentUser(data);
+      console.log(data)
     } catch (err) {
       console.log(err);
     }
@@ -30,9 +31,17 @@ export const CurrentUserProvider = ({ children }) => {
     axiosReq.interceptors.request.use(
       async (config) => {
         try {
-          console.log('beforeaxiospostwait')
-          await axios.post("/dj-rest-auth/token/refresh/");
+          console.log('beforeaxiospostwait');
+          const response = await axios.post("/dj-rest-auth/token/refresh/", {
+            refresh: localStorage.getItem('refreshToken'),
+          });
+          const newAccessToken = response.data.access;
+          localStorage.setItem('accessToken', newAccessToken);
           console.log('afteraxiospostwait')
+          const token = localStorage.getItem('accessToken');
+          if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+          }
         } catch (err) {
           console.log('error axios post wait')
           setCurrentUser((prevCurrentUser) => {
@@ -55,8 +64,16 @@ export const CurrentUserProvider = ({ children }) => {
       async (err) => {
         if (err.response?.status === 401) {
           try {
-            console.log('response 401')
-            await axios.post("/dj-rest-auth/token/refresh/");
+            console.log('response 401 refresh')
+            const response = await axios.post("/dj-rest-auth/token/refresh/", {
+              refresh: localStorage.getItem('refreshToken'),
+            });
+            const newAccessToken = response.data.access;
+            localStorage.setItem('accessToken', newAccessToken);
+            console.log(newAccessToken, 'New Token')
+            // const response = await axiosInstance.post('/token/refresh/', {
+            //   refresh: localStorage.getItem('refresh_token'),
+            // });
           } catch (err) {
             setCurrentUser((prevCurrentUser) => {
               if (prevCurrentUser) {
