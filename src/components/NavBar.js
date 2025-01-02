@@ -3,10 +3,13 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
 import { NavLink } from "react-router-dom";
-import { useCurrentUser } from "../contexts/CurrentUserContext";
+import { useCurrentUser  } from "../contexts/CurrentUserContext";
+import Avatar from "./Avatar";
 
 const NavBar = () => {
   const currentUser = useCurrentUser();
+  const cloudinaryBaseURL = "https://res.cloudinary.com/du7daaai2/image/upload/";
+  const defaultImage = "https://res.cloudinary.com/du7daaai2/image/upload/default_profile_fhledc";
 
   const addPostIcon = (
     <NavLink
@@ -39,6 +42,16 @@ const NavBar = () => {
       onClick={() => {}}
     >
       <i className="fas fa-sign-out-alt"></i>Sign out 
+    </NavLink>
+    <NavLink
+      className={styles.NavLink}
+      to={`/profiles/${currentUser?.profile_id}`}
+    >
+    <Avatar
+        src={currentUser?.profile_image ? `${cloudinaryBaseURL}${currentUser.profile_image}` : defaultImage}
+        text="Profile"
+        height={40}
+    />
     </NavLink>
   </>;
   const loggedOutIcons = (

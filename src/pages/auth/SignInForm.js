@@ -30,7 +30,6 @@ function SignInForm() {
   const history = useHistory();
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       const response = await axios.post("/dj-rest-auth/login/", signInData);
       const { access, refresh } = response.data;
