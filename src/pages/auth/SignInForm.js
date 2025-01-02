@@ -41,6 +41,8 @@ function SignInForm() {
     } catch (err) {
       setErrors(err.response?.data);
     }
+    console.log('Sign in: Successful')
+
   };
 
   const handleChange = (event) => {

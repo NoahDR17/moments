@@ -3,13 +3,27 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
 import { NavLink } from "react-router-dom";
-import { useCurrentUser  } from "../contexts/CurrentUserContext";
+import { useCurrentUser, useSetCurrentUser } from "../contexts/CurrentUserContext";
 import Avatar from "./Avatar";
+import { axiosReq } from "../api/axiosDefaults";
 
 const NavBar = () => {
   const currentUser = useCurrentUser();
+  const setCurrentUser = useSetCurrentUser();
   const cloudinaryBaseURL = "https://res.cloudinary.com/du7daaai2/image/upload/";
   const defaultImage = "https://res.cloudinary.com/du7daaai2/image/upload/default_profile_fhledc";
+
+  const handleSignOut = async () => {
+    try {
+      await axiosReq.post("dj-rest-auth/logout/");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      setCurrentUser(null);
+    } catch (err) {
+      console.log(err);
+    }
+    console.log('Sign out: Successful')
+  };
 
   const addPostIcon = (
     <NavLink
@@ -36,22 +50,22 @@ const NavBar = () => {
     >
       <i className="fas fa-heart"></i>Liked
     </NavLink>
-    <NavLink
-      className={styles.NavLink}
-      to="/"
-      onClick={() => {}}
-    >
-      <i className="fas fa-sign-out-alt"></i>Sign out 
+    <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
+      <i className="fas fa-sign-out-alt"></i>Sign out
     </NavLink>
     <NavLink
       className={styles.NavLink}
       to={`/profiles/${currentUser?.profile_id}`}
     >
-    <Avatar
+      <Avatar
         src={currentUser?.profile_image ? `${cloudinaryBaseURL}${currentUser.profile_image}` : defaultImage}
-        text="Profile"
+        text={
+          currentUser?.username && currentUser.username.length < 10
+            ? currentUser.username.charAt(0).toUpperCase() + currentUser.username.slice(1)
+            : "Profile"
+        }
         height={40}
-    />
+      />
     </NavLink>
   </>;
   const loggedOutIcons = (

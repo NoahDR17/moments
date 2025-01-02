@@ -43,6 +43,8 @@ const SignUpForm = () => {
     } catch (err) {
       setErrors(err.response?.data);
     }
+    console.log('Sign up: Successful')
+
   };
 
   return (

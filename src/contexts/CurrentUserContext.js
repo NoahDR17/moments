@@ -15,7 +15,6 @@ export const CurrentUserProvider = ({ children }) => {
 
   const handleMount = async () => {
     try {
-      console.log('handleMount')
       const { data } = await axiosReq.get("dj-rest-auth/user/");
       setCurrentUser(data);
       console.log(data)
@@ -32,19 +31,16 @@ export const CurrentUserProvider = ({ children }) => {
     axiosReq.interceptors.request.use(
       async (config) => {
         try {
-          console.log('beforeaxiospostwait');
           const response = await axios.post("/dj-rest-auth/token/refresh/", {
             refresh: localStorage.getItem('refreshToken'),
           });
           const newAccessToken = response.data.access;
           localStorage.setItem('accessToken', newAccessToken);
-          console.log('afteraxiospostwait')
           const token = localStorage.getItem('accessToken');
           if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
           }
         } catch (err) {
-          console.log('error axios post wait')
           setCurrentUser((prevCurrentUser) => {
             if (prevCurrentUser) {
               history.push("/signin");
@@ -65,7 +61,6 @@ export const CurrentUserProvider = ({ children }) => {
       async (err) => {
         if (err.response?.status === 401) {
           try {
-            console.log('response 401 refresh')
             const response = await axios.post("/dj-rest-auth/token/refresh/", {
               refresh: localStorage.getItem('refreshToken'),
             });
