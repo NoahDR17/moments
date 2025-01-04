@@ -2,7 +2,6 @@ import React from 'react'
 import styles from '../styles/Avatar.module.css'
 
 const Avatar = ({ src, height = 45, text }) => {
-    const defaultImage = "https://res.cloudinary.com/du7daaai2/image/upload/default_profile_fhledc";
 
     return (
         <span>
@@ -14,8 +13,7 @@ const Avatar = ({ src, height = 45, text }) => {
                 alt='avatar'
                 onError={(e) => {
                     e.target.onerror = null; // Prevent infinite loop
-                    e.target.src = defaultImage; // Set to default image
-                    console.log('Error occured, setting profile image to default image.')
+                    console.log('Error occured')
                   }}
             />
             {text}

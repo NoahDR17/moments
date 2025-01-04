@@ -42,10 +42,12 @@ function PostCreateForm() {
   const handleChangeImage = (event) => {
     if (event.target.files.length) {
       URL.revokeObjectURL(image);
+      const localURL = URL.createObjectURL(event.target.files[0])
       setPostData({
         ...postData,
-        image: URL.createObjectURL(event.target.files[0]),
+        image: localURL,
       });
+      console.log(localURL)
     }
   };
 
@@ -56,7 +58,7 @@ function PostCreateForm() {
     formData.append("title", title);
     formData.append("content", content);
     formData.append("image", imageInput.current.files[0]);
-
+    console.log(imageInput.current.files[0])
     try {
       const { data } = await axiosReq.post("/posts/", formData);
       history.push(`/posts/${data.id}`);

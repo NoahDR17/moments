@@ -11,8 +11,6 @@ import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 const NavBar = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
-  const cloudinaryBaseURL = "https://res.cloudinary.com/du7daaai2/image/upload/";
-  const defaultImage = "https://res.cloudinary.com/du7daaai2/image/upload/default_profile_fhledc";
 
   const {expanded, setExpanded, ref} = useClickOutsideToggle();
 
@@ -61,8 +59,7 @@ const NavBar = () => {
       to={`/profiles/${currentUser?.profile_id}`}
     >
       <Avatar
-        src={currentUser?.profile_image ? `${cloudinaryBaseURL}${currentUser.profile_image}` : defaultImage}
-        text={
+          src={currentUser?.profile_image}        text={
           currentUser?.username && currentUser.username.length < 10
             ? currentUser.username.charAt(0).toUpperCase() + currentUser.username.slice(1)
             : "Profile"
