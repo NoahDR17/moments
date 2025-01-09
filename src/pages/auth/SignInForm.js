@@ -39,7 +39,7 @@ function SignInForm() {
       localStorage.setItem('accessToken', access);
       localStorage.setItem('refreshToken', refresh);
       console.log(response)
-      history.goBack();
+      history.push("/");
     } catch (err) {
       setErrors(err.response?.data);
     }
