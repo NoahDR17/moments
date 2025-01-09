@@ -12,7 +12,7 @@ const NavBar = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
 
-  const {expanded, setExpanded, ref} = useClickOutsideToggle();
+  const { expanded, setExpanded, ref } = useClickOutsideToggle();
 
   const handleSignOut = async () => {
     try {
@@ -32,9 +32,9 @@ const NavBar = () => {
       activeClassName={styles.Active}
       to="/posts/create"
     >
-      <i className="fas fa-plus-square"></i>Add post
+      <i className="far fa-plus-square"></i>Add post
     </NavLink>
-  )
+  );
 
   const loggedInIcons = <>
     <NavLink
@@ -59,7 +59,7 @@ const NavBar = () => {
       to={`/profiles/${currentUser?.profile_id}`}
     >
       <Avatar
-          src={currentUser?.profile_image}        text={
+        src={currentUser?.profile_image} text={
           currentUser?.username && currentUser.username.length < 10
             ? currentUser.username.charAt(0).toUpperCase() + currentUser.username.slice(1)
             : "Profile"
