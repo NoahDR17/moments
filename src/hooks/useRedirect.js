@@ -18,7 +18,7 @@ export const useRedirect = (userAuthStatus) => {
           history.push("/");
         }
       }
-    };
+    }; 
     handleMount();
   }, [history, userAuthStatus]);
 };
